@@ -1,0 +1,57 @@
+{
+    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PTERODACTYL PANEL - PTERODACTYL.IO",
+    "meta": {
+        "version": "PTDL_v2"
+    },
+    "exported_at": "2026-01-31T00:00:00+07:00",
+    "name": "BOT NODEJS",
+    "author": "AbuZy Creative <abuzycreative@gmail.com>",
+    "description": "Egg untuk menjalankan Bot NodeJS seperti WhatsApp Bot / Telegram Bot",
+    "docker_images": {
+        "NodeJS 18": "ghcr.io/parkervcp/yolks:nodejs_18",
+        "NodeJS 19": "ghcr.io/parkervcp/yolks:nodejs_19",
+        "NodeJS 20": "ghcr.io/parkervcp/yolks:nodejs_20",
+        "NodeJS 21": "ghcr.io/parkervcp/yolks:nodejs_21",
+        "NodeJS 22": "ghcr.io/parkervcp/yolks:nodejs_22",
+        "NodeJS 23": "ghcr.io/parkervcp/yolks:nodejs_23",
+        "NodeJS 24": "ghcr.io/parkervcp/yolks:nodejs_24",
+        "NodeJS 25": "ghcr.io/parkervcp/yolks:nodejs_25"
+    },
+    "file_denylist": [],
+    "startup": "if [ -f /home/container/package.json ]; then npm install; fi; node ${JS_FILE}",
+    "config": {
+        "files": "{}",
+        "startup": "{\n    \"done\": \"running\"\n}",
+        "logs": "{}",
+        "stop": "stop"
+    },
+    "scripts": {
+        "installation": {
+            "script": "#!/bin/bash\napt update\napt install -y git curl unzip\n\ncd /mnt/server\n\nif [ -n \"${GIT_ADDRESS}\" ]; then\n    if [[ ${GIT_ADDRESS} != *.git ]]; then\n        GIT_ADDRESS=${GIT_ADDRESS}.git\n    fi\n\n    git clone ${GIT_ADDRESS} .\nfi\n\nif [ -f package.json ]; then\n    npm install --production\nfi\n\necho \"Install selesai\"",
+            "container": "node:18-buster-slim",
+            "entrypoint": "bash"
+        }
+    },
+    "variables": [
+        {
+            "name": "JS File",
+            "description": "File utama bot",
+            "env_variable": "JS_FILE",
+            "default_value": "index.js",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Git Repo",
+            "description": "Link repo bot",
+            "env_variable": "GIT_ADDRESS",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string",
+            "field_type": "text"
+        }
+    ]
+}
